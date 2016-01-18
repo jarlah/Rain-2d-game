@@ -35,6 +35,18 @@ public abstract class Level {
 			}
 		}
 	}
+	
+	public boolean tileCollision(int x, int y, int size, int xOffset, int yOffset) {		
+		for (int c = 0; c < 4; c++) {
+			double xt = (x - c % 2 * size + xOffset) / Tile.TILE_SIZE;
+			double yt = (y - c / 2 * size + yOffset) / Tile.TILE_SIZE;
+			if (getTile((int)xt, (int)yt).solid()) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 
 	public void render(int xScroll, int yScroll, Screen screen) {
 		screen.setOffsets(xScroll, yScroll);
@@ -72,7 +84,10 @@ public abstract class Level {
 	}
 	
 	public void addAll(Collection<Entity> entities) {
-		this.entities.addAll(entities);
+		for (Entity e: entities) {
+			e.setLevel(this);
+			this.entities.add(e);
+		}
 	}
 	
 	public List<Entity> getEntities() {

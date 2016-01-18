@@ -1,14 +1,14 @@
 package com.jarlandre.rain.entity.impl.projectiles.impl;
 
 import com.jarlandre.rain.Coordinate;
-import com.jarlandre.rain.entity.Spawner;
 import com.jarlandre.rain.entity.impl.projectiles.Projectile;
+import com.jarlandre.rain.entity.impl.spawner.Spawner;
+import com.jarlandre.rain.entity.impl.spawner.impl.ParticleSpawner;
 import com.jarlandre.rain.graphics.Sprite;
-import com.jarlandre.rain.level.Level;
 
 public class BulletProjectile extends Projectile {
 	public static final int FIRE_RATE = 15;
-	
+
 	public BulletProjectile(double x, double y, double angle) {
 		super(x, y, angle);
 		this.range = 150;
@@ -18,28 +18,15 @@ public class BulletProjectile extends Projectile {
 		this.ny = speed * Math.sin(angle);
 		this.sprite = Sprite.bullet;
 	}
-	
+
 	public void update() {
-		if (collision(xCurrent, yCurrent, nx, ny, 9, level)) {
-			Spawner spawner = new Spawner(xCurrent, yCurrent, Spawner.Type.PARTICLE, 50);
+		if (level.tileCollision((int) (xCurrent + nx), (int) (yCurrent + ny), 9, 3, 3)) {
+			Spawner spawner = new ParticleSpawner(xCurrent, yCurrent, 44, 50);
 			spawner.spawn(level);
 			remove();
 			return;
 		}
 		move();
-	}
-	
-	public boolean collision(double x, double y, double xa, double ya, int size, Level level) {
-		boolean solid = false;
-		for (int c = 0; c < 4; c++) {
-			double xt = ((x + xa) + c % 2 - size / 2 - 8) / sprite.width();
-			double yt = ((y + ya) + c / 2 - size + 8) / sprite.height();
-			if (level.getTile((int)xt, (int)yt).solid()) {
-				solid = true;
-			}
-		}
-		
-		return solid;
 	}
 
 	public void move() {
