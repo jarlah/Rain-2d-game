@@ -15,8 +15,8 @@ public class Player extends Mob {
 	private int fireRate = 0;
 
 	public Player(Coordinate coord) {
-		this.x = coord.getX();
-		this.y = coord.getY();
+		this.xCurrent = coord.x();
+		this.yCurrent = coord.y();
 		this.fireRate = BulletProjectile.FIRE_RATE;
 	}
 
@@ -49,15 +49,25 @@ public class Player extends Mob {
 			double dx = MouseHandler.geX() - Resolution.getDimension().getWidth() / 2;
 			double dy = MouseHandler.getY() - Resolution.getDimension().getHeight() / 2;
 			double dir = Math.atan2(dy, dx);
-			shoot(x, y, dir);
+			shoot(xCurrent, yCurrent, dir);
 			fireRate = BulletProjectile.FIRE_RATE;
 		}
 	}
 
 	public void render(Screen screen) {
-		boolean xflip = false, yflip = false;
+		boolean xflip = false;
 		sprite = Sprite.player_backward_0;
-		if (Direction.UP == direction) {
+		updateSpriteDirection();
+		if (Direction.LEFT == currentDirection) {
+			xflip = true;
+		}
+		int xx = (int)xCurrent - sprite.width() / 2;
+		int yy = (int)yCurrent - sprite.height() / 2;
+		screen.renderSprite(xx, yy, sprite, false, xflip, false);
+	}
+
+	private void updateSpriteDirection() {
+		if (Direction.UP == currentDirection) {
 			sprite = Sprite.player_forward_0;
 			if (moving) {
 				if (anim % 20 > 10) {
@@ -67,7 +77,7 @@ public class Player extends Mob {
 				}
 			}
 		}
-		if (Direction.DOWN == direction) {
+		if (Direction.DOWN == currentDirection) {
 			sprite = Sprite.player_backward_0;
 			if (moving) {
 				if (anim % 20 > 10) {
@@ -77,7 +87,7 @@ public class Player extends Mob {
 				}
 			}
 		}
-		if (Direction.RIGHT == direction || Direction.LEFT == direction) {
+		if (Direction.RIGHT == currentDirection || Direction.LEFT == currentDirection) {
 			sprite = Sprite.player_side_0;
 			if (moving) {
 				if (anim % 20 > 10) {
@@ -87,12 +97,6 @@ public class Player extends Mob {
 				}
 			}
 		}
-		if (Direction.LEFT == direction) {
-			xflip = true;
-		}
-		int xx = x - sprite.getSize() / 2;
-		int yy = y - sprite.getSize() / 2;
-		screen.renderPlayer(xx, yy, sprite, xflip, yflip);
 	}
 
 }

@@ -2,14 +2,12 @@ package com.jarlandre.rain.entity.impl.mob;
 
 import com.jarlandre.rain.Direction;
 import com.jarlandre.rain.entity.Entity;
-import com.jarlandre.rain.entity.impl.projectiles.Projectile;
 import com.jarlandre.rain.entity.impl.projectiles.impl.BulletProjectile;
 import com.jarlandre.rain.graphics.Screen;
-import com.jarlandre.rain.graphics.Sprite;
 
-public abstract class Mob extends Entity{
-	protected Sprite sprite;
-	protected Direction direction;
+public abstract class Mob extends Entity {
+	protected Direction currentDirection;
+	
 	protected boolean moving = false;
 
 	public void move(int xa, int ya) {
@@ -18,14 +16,18 @@ public abstract class Mob extends Entity{
 			move(xa, 0);
 			return;
 		}
-		if (xa > 0) direction = Direction.RIGHT;
-		if (xa < 0) direction = Direction.LEFT;
-		if (ya > 0) direction = Direction.DOWN;
-		if (ya < 0) direction = Direction.UP;
-		
+		if (xa > 0)
+			currentDirection = Direction.RIGHT;
+		if (xa < 0)
+			currentDirection = Direction.LEFT;
+		if (ya > 0)
+			currentDirection = Direction.DOWN;
+		if (ya < 0)
+			currentDirection = Direction.UP;
+
 		if (!collision(xa, ya)) {
-			this.x += xa;
-			this.y += ya;
+			this.xCurrent += xa;
+			this.yCurrent += ya;
 		}
 	}
 	
@@ -33,17 +35,15 @@ public abstract class Mob extends Entity{
 		
 	}
 	
-	public void shoot(int x, int y, double dir) {
-		//dir *= 180 / Math.PI;
-		Projectile bullet = new BulletProjectile(x, y, dir);
-		level.add(bullet);
+	public void shoot(double x, double y, double dir) {
+		level.add(new BulletProjectile(x, y, dir));
 	}
 	
 	public boolean collision(int xa, int ya) {
 		boolean solid = false;
 		for (int c = 0; c < 4; c++) {
-			int xt = ((x + xa) + c % 2 * 14 - 8) / 16;
-			int yt = ((y + ya) + c / 2 * 12 + 3) / 16;
+			int xt = (((int) xCurrent + xa) + c % 2 * 14 - 8) / 16;
+			int yt = (((int) yCurrent + ya) + c / 2 * 12 + 3) / 16;
 			if (level.getTile(xt, yt).solid()) {
 				solid = true;
 			}

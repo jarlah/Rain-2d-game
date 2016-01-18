@@ -1,6 +1,7 @@
 package com.jarlandre.rain.level;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -67,7 +68,11 @@ public abstract class Level {
 
 	public void add(Entity bullet) {
 		bullet.setLevel(this);
-		entities.add(bullet);
+		this.entities.add(bullet);
+	}
+	
+	public void addAll(Collection<Entity> entities) {
+		this.entities.addAll(entities);
 	}
 	
 	public List<Entity> getEntities() {

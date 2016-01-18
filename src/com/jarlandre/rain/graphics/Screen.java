@@ -18,36 +18,21 @@ public class Screen {
 			pixels[i] = 0;
 		}
 	}
-
-	public void renderTile(int xp, int yp, Sprite sprite) {
-		yp -= yOffset;
-		xp -= xOffset;
-		for (int y = 0; y < sprite.getSize(); y++) {
-			int ya = y + yp;
-			for (int x = 0; x < sprite.getSize(); x++) {
-				int xa = x + xp;
-				if (xa < -sprite.getSize() || xa >= width || ya < 0 || ya >= height) break;
-				if (xa < 0) xa = 0;
-				int colour = sprite.getPixels()[x + y * sprite.getSize()];
-				if (colour != 0xffff00ff) {
-					pixels[xa + ya * width] = sprite.getPixels()[x + y * sprite.getSize()];
-				}
-			}
-		}
-	}
 	
-	public void renderPlayer(int xp, int yp, Sprite sprite, boolean xflip, boolean yflip) {
-		yp -= yOffset;
-		xp -= xOffset;
-		for (int y = 0; y < sprite.getSize(); y++) {
+	public void renderSprite(int xp, int yp, Sprite sprite, boolean fixed, boolean xflip, boolean yflip) {
+		if (!fixed) {
+			yp -= yOffset;
+			xp -= xOffset;
+		}
+		for (int y = 0; y < sprite.height(); y++) {
 			int ya = y + yp;
-			int ys = yflip ? 31 - y : y;
-			for (int x = 0; x < sprite.getSize(); x++) {
+			int ys = yflip ? (sprite.height() - 1) - y : y;
+			for (int x = 0; x < sprite.width(); x++) {
 				int xa = x + xp;
-				int xs = xflip ? 31 - x : x;
-				if (xa < -sprite.getSize() || xa >= width || ya < 0 || ya >= height) break;
+				int xs = xflip ? (sprite.width() - 1) - x : x;
+				if (xa < -sprite.width() || xa >= width || ya < 0 || ya >= height) break;
 				if (xa < 0) xa = 0;
-				int colour = sprite.getPixels()[xs + ys * sprite.getSize()];
+				int colour = sprite.pixels()[xs + ys * sprite.width()];
 				if (colour != 0xffff00ff) {
 					pixels[xa + ya * width] = colour;
 				}

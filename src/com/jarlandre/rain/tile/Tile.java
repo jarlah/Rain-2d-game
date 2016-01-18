@@ -31,7 +31,7 @@ public class Tile {
 	}
 
 	public void render(int x, int y, Screen screen) {
-		screen.renderTile(x * sprite.getSize(), y * sprite.getSize(), this.sprite);
+		screen.renderSprite(x * sprite.width(), y * sprite.height(), this.sprite, false, false, false);
 	}
 	
 	public boolean solid() {
