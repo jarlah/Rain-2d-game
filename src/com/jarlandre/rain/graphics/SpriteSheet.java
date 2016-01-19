@@ -7,6 +7,13 @@ import javax.imageio.ImageIO;
 
 public class SpriteSheet {
 	public static final SpriteSheet tiles = new SpriteSheet("textures/spritesheet.png", 256);
+	
+	public static final SpriteSheet monsters = new SpriteSheet("textures/monsters-32x32.png", 384, 256);
+	public static final SpriteSheet ogre = new SpriteSheet(monsters, 0, 2, 11, 1, 32);
+	public static final SpriteSheet ogre_down = new SpriteSheet(ogre, 0, 0, 3, 1, 32);
+	public static final SpriteSheet ogre_up = new SpriteSheet(ogre, 6, 0, 3, 1, 32);
+	public static final SpriteSheet ogre_right = new SpriteSheet(ogre, 3, 0, 3, 1, 32);
+	
 	public static final SpriteSheet player = new SpriteSheet("textures/player-32x32.png", 128, 128);
 	public static final SpriteSheet player_down = new SpriteSheet(player, 0, 0, 4, 1, 32);
 	public static final SpriteSheet player_up = new SpriteSheet(player, 0, 1, 4, 1, 32);

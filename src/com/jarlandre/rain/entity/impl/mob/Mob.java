@@ -8,14 +8,17 @@ import com.jarlandre.rain.graphics.Screen;
 public abstract class Mob extends Entity {
 	protected Direction currentDirection;
 	
-	protected boolean moving = false;
+	protected boolean walking = false;
 
-	public void move(int xa, int ya) {
+	public void move(double xa, double ya) {
 		if (xa != 0 && ya != 0) {
 			move(0, ya);
 			move(xa, 0);
 			return;
 		}
+		
+		currentDirection = Direction.NONE;
+		
 		if (xa > 0)
 			currentDirection = Direction.RIGHT;
 		if (xa < 0)
@@ -24,36 +27,33 @@ public abstract class Mob extends Entity {
 			currentDirection = Direction.DOWN;
 		if (ya < 0)
 			currentDirection = Direction.UP;
-
-		if (!collision(xa, ya)) {
+		
+		if (Direction.NONE == currentDirection) {
+			walking = false;
+		} else if (!collision(xa, ya)) {
 			this.x += xa;
 			this.y += ya;
+			walking = true;
 		}
 	}
 	
-	public void update() {
-		
-	}
+	public abstract void update();
+	public abstract void render(Screen screen);
 	
 	public void shoot(double x, double y, double dir) {
 		level.add(new BulletProjectile(x, y, dir));
 	}
 	
-	public boolean collision(int xa, int ya) {
+	public boolean collision(double xa, double ya) {
 		boolean solid = false;
 		for (int c = 0; c < 4; c++) {
-			int xt = (((int) x + xa) + c % 2 * 14 - 8) / 16;
-			int yt = (((int) y + ya) + c / 2 * 12 + 3) / 16;
-			if (level.getTile(xt, yt).solid()) {
+			double xt = ((x + xa) + c % 2 * 14 - 8) / 16;
+			double yt = ((y + ya) + c / 2 * 12 + 3) / 16;
+			if (level.getTile((int)xt, (int)yt).solid()) {
 				solid = true;
 			}
 		}
 		
 		return solid;
 	}
-	
-	public void render(Screen screen) {
-		
-	}
-
 }

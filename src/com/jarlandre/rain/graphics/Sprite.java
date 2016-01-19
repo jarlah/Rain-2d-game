@@ -11,6 +11,18 @@ public class Sprite {
 	public final static Sprite voidSprite = new Sprite(16, 16, 0x1B87E0);
 	public final static Sprite particle_normal = new Sprite(3, 3, 0xAAAAAA);
 	
+	public final static Sprite ogre_up_0 = new Sprite(32, 32, 0, 0, SpriteSheet.ogre_up);
+	public final static Sprite ogre_up_1 = new Sprite(32, 32, 1, 0, SpriteSheet.ogre_up);
+	public final static Sprite ogre_up_2 = new Sprite(32, 32, 2, 0, SpriteSheet.ogre_up);
+	
+	public final static Sprite ogre_down_0 = new Sprite(32, 32, 0, 0, SpriteSheet.ogre_down);
+	public final static Sprite ogre_down_1 = new Sprite(32, 32, 1, 0, SpriteSheet.ogre_down);
+	public final static Sprite ogre_down_2 = new Sprite(32, 32, 2, 0, SpriteSheet.ogre_down);
+	
+	public final static Sprite ogre_side_0 = new Sprite(32, 32, 0, 0, SpriteSheet.ogre_right);
+	public final static Sprite ogre_side_1 = new Sprite(32, 32, 1, 0, SpriteSheet.ogre_right);
+	public final static Sprite ogre_side_2 = new Sprite(32, 32, 2, 0, SpriteSheet.ogre_right);
+	
 	public final static Sprite player_up_0 = new Sprite(32, 32, 0, 0, SpriteSheet.player_up);
 	public final static Sprite player_up_1 = new Sprite(32, 32, 1, 0, SpriteSheet.player_up);
 	public final static Sprite player_up_2 = new Sprite(32, 32, 2, 0, SpriteSheet.player_up);

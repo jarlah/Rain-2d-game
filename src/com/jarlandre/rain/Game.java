@@ -8,13 +8,11 @@ import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.util.Random;
 
 import javax.swing.JFrame;
 
 import com.jarlandre.rain.entity.impl.mob.impl.Player;
 import com.jarlandre.rain.graphics.Screen;
-import com.jarlandre.rain.graphics.Sprite;
 import com.jarlandre.rain.input.KeyboardHandler;
 import com.jarlandre.rain.input.MouseHandler;
 import com.jarlandre.rain.level.Level;
@@ -32,7 +30,6 @@ public class Game extends Loop {
 	private final Screen screen;
 	private final Level level;
 	private final Player player;
-	private final Random random;
 	
 	public Game(String title) {
 		super(TITLE);
@@ -58,7 +55,6 @@ public class Game extends Loop {
 		this.level = Level.level1;
 		this.player = new Player(new TileCoordinate(10, 52));
 		this.player.setLevel(level);
-		this.random = new Random();
 		this.canvas.requestFocus();
 	}
 	
@@ -86,12 +82,6 @@ public class Game extends Loop {
 		int yScroll = (int) player.y() - screen.getHeight() / 2;
 		level.render(xScroll, yScroll, screen);
 		player.render(screen);
-		Sprite sprite = new Sprite(2, 2, 0xffffff);
-		for (int i = 0; i < 100; i++) {
-			int x = random.nextInt(20);
-			int y = random.nextInt(20);
-			screen.renderSprite(10 * 16 + x, 52 * 16 + y, sprite, false, false, false);
-		}
 		for (int i = 0; i < pixels.length; i++) {
 			pixels[i] = screen.getPixels()[i];
 		}
@@ -101,8 +91,6 @@ public class Game extends Loop {
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Verdana", 0, 50));
 		window.setTitle(TITLE + " | " + getFps() + " fps, " + getUps() + " update" + (getUps() > 1 ? " catchup" : "") + " per render");
-		//g.fillRect(MouseHandler.getMouseX() - 32, MouseHandler.getMouseY() - 32, 64, 64);
-		//g.drawString("Mouse: " + MouseHandler.getMouseB(), 80, 80);
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
 		bs.show();

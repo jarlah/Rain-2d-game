@@ -5,7 +5,10 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import com.jarlandre.rain.entity.impl.spawner.Spawner;
+import com.jarlandre.rain.entity.impl.spawner.impl.MobSpawner;
 import com.jarlandre.rain.level.Level;
+import com.jarlandre.rain.tile.TileCoordinate;
 
 public class SpawnLevel extends Level {	
 	public SpawnLevel(String path) {
@@ -21,5 +24,9 @@ public class SpawnLevel extends Level {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		TileCoordinate coord = new TileCoordinate(15, 52);
+		Spawner mobSpawner = new MobSpawner(coord.x(), coord.y(), 5);
+		mobSpawner.setLevel(this);
+		mobSpawner.spawn();
 	}
 }
