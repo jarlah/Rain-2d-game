@@ -41,5 +41,9 @@ public class KeyboardHandler extends KeyAdapter {
 	public static boolean isDown() {
 		return down;
 	}
+	
+	public static boolean isMoving() {
+		return left || right || up || down;
+	}
 
 }

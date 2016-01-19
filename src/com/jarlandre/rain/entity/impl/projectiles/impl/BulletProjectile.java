@@ -22,7 +22,8 @@ public class BulletProjectile extends Projectile {
 	public void update() {
 		if (level.tileCollision((int) (x + nx), (int) (y + ny), 9, 3, 3)) {
 			Spawner spawner = new ParticleSpawner(x, y, 44, 50);
-			spawner.spawn(level);
+			spawner.setLevel(level);
+			spawner.spawn();
 			remove();
 			return;
 		}

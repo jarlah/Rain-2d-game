@@ -5,18 +5,19 @@ import com.jarlandre.rain.entity.impl.spawner.Spawner;
 
 public class ParticleSpawner extends Spawner {
 
-	private final int life;
+	private final int life, amount;
 
 	public ParticleSpawner(double x, double y, int life, int amount) {
-		super(x, y, Type.PARTICLE);
+		super(x, y);
 		this.life = life;
+		this.amount = amount;
+	}
+	
+	public void spawn() {
 		for (int i = 0; i < amount; i++) {
-			entities.add(new Particle(x, y, life));
+			Particle p = new Particle(x, y, life);
+			p.setLevel(level);
+			level.add(p);
 		}
 	}
-
-	public int getLife() {
-		return life;
-	}
-
 }

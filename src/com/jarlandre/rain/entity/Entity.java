@@ -7,7 +7,6 @@ import com.jarlandre.rain.graphics.Sprite;
 import com.jarlandre.rain.level.Level;
 
 public abstract class Entity {
-	
 	protected Sprite sprite;
 	// Current position (where its now)
 	protected double x, y;
@@ -15,8 +14,11 @@ public abstract class Entity {
 	protected Level level;
 	protected final Random random = new Random();
 	
-	public void update() {};
-	public void render(Screen screen) {};
+	public void update() {
+	}
+	
+	public void render(Screen screen) {
+	}
 
 	public boolean isRemoved() {
 		return removed;
