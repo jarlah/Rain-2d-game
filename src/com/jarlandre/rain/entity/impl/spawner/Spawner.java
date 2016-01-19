@@ -16,8 +16,8 @@ public class Spawner extends Entity {
 	private final Type type;
 	
 	public Spawner(double x, double y, Type type) {
-		this.xCurrent = x;
-		this.yCurrent = y;
+		this.x = x;
+		this.y = y;
 		this.type = type;
 	}
 

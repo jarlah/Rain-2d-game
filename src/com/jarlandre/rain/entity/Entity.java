@@ -10,7 +10,7 @@ public abstract class Entity {
 	
 	protected Sprite sprite;
 	// Current position (where its now)
-	protected double xCurrent, yCurrent;
+	protected double x, y;
 	private boolean removed = false;
 	protected Level level;
 	protected final Random random = new Random();
@@ -27,11 +27,11 @@ public abstract class Entity {
 	}
 	
 	public double x() {
-		return xCurrent;
+		return x;
 	}
 	
 	public double y() {
-		return yCurrent;
+		return y;
 	}
 	public void setLevel(Level level) {
 		this.level = level;

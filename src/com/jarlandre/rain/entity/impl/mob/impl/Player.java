@@ -15,8 +15,8 @@ public class Player extends Mob {
 	private int fireRate = 0;
 
 	public Player(Coordinate coord) {
-		this.xCurrent = coord.x();
-		this.yCurrent = coord.y();
+		this.x = coord.x();
+		this.y = coord.y();
 		this.fireRate = BulletProjectile.FIRE_RATE;
 	}
 
@@ -49,7 +49,7 @@ public class Player extends Mob {
 			double dx = MouseHandler.geX() - Resolution.getDimension().getWidth() / 2;
 			double dy = MouseHandler.getY() - Resolution.getDimension().getHeight() / 2;
 			double dir = Math.atan2(dy, dx);
-			shoot(xCurrent, yCurrent, dir);
+			shoot(x, y, dir);
 			fireRate = BulletProjectile.FIRE_RATE;
 		}
 	}
@@ -61,8 +61,8 @@ public class Player extends Mob {
 		if (Direction.LEFT == currentDirection) {
 			xflip = true;
 		}
-		int xx = (int)xCurrent - sprite.width() / 2;
-		int yy = (int)yCurrent - sprite.height() / 2;
+		int xx = (int)x - sprite.width() / 2;
+		int yy = (int)y - sprite.height() / 2;
 		screen.renderSprite(xx, yy, sprite, false, xflip, false);
 	}
 

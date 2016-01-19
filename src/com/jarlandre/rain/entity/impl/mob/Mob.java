@@ -26,8 +26,8 @@ public abstract class Mob extends Entity {
 			currentDirection = Direction.UP;
 
 		if (!collision(xa, ya)) {
-			this.xCurrent += xa;
-			this.yCurrent += ya;
+			this.x += xa;
+			this.y += ya;
 		}
 	}
 	
@@ -42,8 +42,8 @@ public abstract class Mob extends Entity {
 	public boolean collision(int xa, int ya) {
 		boolean solid = false;
 		for (int c = 0; c < 4; c++) {
-			int xt = (((int) xCurrent + xa) + c % 2 * 14 - 8) / 16;
-			int yt = (((int) yCurrent + ya) + c / 2 * 12 + 3) / 16;
+			int xt = (((int) x + xa) + c % 2 * 14 - 8) / 16;
+			int yt = (((int) y + ya) + c / 2 * 12 + 3) / 16;
 			if (level.getTile(xt, yt).solid()) {
 				solid = true;
 			}

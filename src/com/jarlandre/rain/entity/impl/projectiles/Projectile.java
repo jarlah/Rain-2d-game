@@ -17,8 +17,8 @@ public abstract class Projectile extends Entity {
 	public Projectile(double x, double y, double angle) {
 		this.xOrigin = x;
 		this.yOrigin = y;
-		this.xCurrent = x;
-		this.yCurrent = y;
+		this.x = x;
+		this.y = y;
 		this.angle = angle;
 	}
 	
@@ -27,7 +27,7 @@ public abstract class Projectile extends Entity {
 	}
 
 	public void render(Screen screen) {
-		screen.renderSprite((int) xCurrent - sprite.width(), (int) yCurrent - sprite.height() / 2, sprite, false, false, false);
+		screen.renderSprite((int) x - sprite.width(), (int) y - sprite.height() / 2, sprite, false, false, false);
 	}
 
 	protected void move() {

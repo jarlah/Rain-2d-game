@@ -20,8 +20,8 @@ public class BulletProjectile extends Projectile {
 	}
 
 	public void update() {
-		if (level.tileCollision((int) (xCurrent + nx), (int) (yCurrent + ny), 9, 3, 3)) {
-			Spawner spawner = new ParticleSpawner(xCurrent, yCurrent, 44, 50);
+		if (level.tileCollision((int) (x + nx), (int) (y + ny), 9, 3, 3)) {
+			Spawner spawner = new ParticleSpawner(x, y, 44, 50);
 			spawner.spawn(level);
 			remove();
 			return;
@@ -30,10 +30,10 @@ public class BulletProjectile extends Projectile {
 	}
 
 	public void move() {
-		xCurrent += nx;
-		yCurrent += ny;
+		x += nx;
+		y += ny;
 		Coordinate origin = new Coordinate(xOrigin, yOrigin);
-		Coordinate current = new Coordinate(xCurrent, yCurrent);
+		Coordinate current = new Coordinate(x, y);
 		if (origin.distance(current) > range) {
 			remove();
 		}

@@ -36,16 +36,17 @@ public abstract class Level {
 		}
 	}
 	
-	public boolean tileCollision(int x, int y, int size, int xOffset, int yOffset) {		
+	public boolean tileCollision(int x, int y, int size, int xOffset, int yOffset) {	
+		boolean solid = false;
 		for (int c = 0; c < 4; c++) {
 			double xt = (x - c % 2 * size + xOffset) / Tile.TILE_SIZE;
 			double yt = (y - c / 2 * size + yOffset) / Tile.TILE_SIZE;
 			if (getTile((int)xt, (int)yt).solid()) {
-				return true;
+				solid = true;
 			}
 		}
 		
-		return false;
+		return solid;
 	}
 
 	public void render(int xScroll, int yScroll, Screen screen) {
