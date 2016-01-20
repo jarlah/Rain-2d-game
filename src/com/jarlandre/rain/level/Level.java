@@ -3,6 +3,7 @@ package com.jarlandre.rain.level;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 
 import com.jarlandre.rain.entity.Entity;
 import com.jarlandre.rain.entity.impl.mob.impl.ClientPlayer;
@@ -37,6 +38,35 @@ public abstract class Level {
 				e.update();
 			}
 		}
+	}
+	
+	/**
+	 * <code>
+	 * Entity enemyMob = ...;<br />
+	 * getEntities(enemyMob, 20, entity -> entity instanceof Player);
+	 * </code>
+	 * 
+	 * @param e
+	 * @param radius
+	 * @param typePredicate
+	 * @return
+	 */
+	public List<Entity> getEntities(Entity e, int radius, Predicate<Entity> typePredicate) {
+		List<Entity> result = new ArrayList<Entity>();
+		double ex = e.x();
+		double ey = e.y();
+		for (Entity entity: entities) {
+			double x = entity.x();
+			double y = entity.y();
+			double dx = Math.abs(x - ex);
+			double dy = Math.abs(y - ey);
+			// diagonal distance = square root of x^2 + y^2
+			double distance = Math.sqrt((dx * dx) + (dy * dy));
+			if (distance <= radius && typePredicate.test(entity)) {
+				result.add(entity);
+			}
+		}
+		return result;
 	}
 	
 	public boolean tileCollision(int x, int y, int size, int xOffset, int yOffset) {	
