@@ -20,6 +20,7 @@ public abstract class Projectile extends Entity {
 		this.x = x;
 		this.y = y;
 		this.angle = angle;
+		this.damage = 1;
 	}
 	
 	public boolean collision(double x, double y, double xa, double ya, int size, Level level) {
@@ -32,5 +33,9 @@ public abstract class Projectile extends Entity {
 
 	protected void move() {
 
+	}
+
+	public double getDamage() {
+		return damage;
 	}
 }

@@ -19,7 +19,7 @@ public class Player extends Mob {
 	public Player(Coordinate coord) {
 		this.x = coord.x();
 		this.y = coord.y();
-		this.speed = 0.6;
+		this.speed = 1.4;
 		this.health = 10;
 		this.fireRate = BulletProjectile.FIRE_RATE;
 		

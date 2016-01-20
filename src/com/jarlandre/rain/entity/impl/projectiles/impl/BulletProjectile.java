@@ -12,19 +12,21 @@ public class BulletProjectile extends Projectile {
 		super(x, y, angle);
 		this.range = 150;
 		this.speed = 3;
-		this.damage = 20;
+		this.damage = 1;
 		this.nx = speed * Math.cos(angle);
 		this.ny = speed * Math.sin(angle);
 		this.sprite = Sprite.bullet;
 	}
 
 	public void update() {
-		if (level.tileCollision((int) (x + nx), (int) (y + ny), 9, 3, 3)) {
-			new ParticleSpawner(x, y, 44, 50, level).spawn();
-			remove();
-			return;
+		if (!level.projectileCollision((int) (x + nx), (int) (y + ny), this)) {
+			if (level.tileCollision((int) (x + nx), (int) (y + ny), 9, 3, 3)) {
+				new ParticleSpawner(x, y, 44, 50, level).spawn();
+				remove();
+				return;
+			}
+			move();
 		}
-		move();
 	}
 
 	public void move() {

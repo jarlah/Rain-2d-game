@@ -1,7 +1,10 @@
 package com.jarlandre.rain.entity.impl.mob.impl;
 
+import java.util.List;
+
 import com.jarlandre.rain.Animation;
 import com.jarlandre.rain.Direction;
+import com.jarlandre.rain.entity.Entity;
 import com.jarlandre.rain.entity.impl.mob.Mob;
 import com.jarlandre.rain.graphics.Screen;
 import com.jarlandre.rain.graphics.Sprite;
@@ -10,12 +13,11 @@ public class Ogre extends Mob {
 	private Animation side, down, up, still;
 	private Animation current;
 	
-	private double xa = 0, ya = 0;		
-	
 	public Ogre(double x, double y) {
 		this.x = x;
 		this.y = y;
-		this.speed = 0.3;
+		this.speed = 0.8;
+		this.health = 5;
 		this.still = new Animation();
 		this.still.setDelay(-1);
 		this.still.setFrames(new Sprite[] {
@@ -42,27 +44,46 @@ public class Ogre extends Mob {
 		
 		this.current = still;
 	}
+	
+	public void hit(int d) {
+		this.health -= d;
+		if (this.health <= 0) {
+			remove();
+		}
+	}
 
 	@Override
 	public void update() {
 		current.update();
 		
-		Player player = level.getClientPlayer();
-		double pX = player.x();
-		double pY = player.y();
-		if (x < pX) xa = speed;
-		if (x > pX) xa = -speed;
-		if (y < pY) ya = speed;
-		if (y > pY) ya = -speed;
+		double xa = 0, ya = 0;		
 		
-		if (xa < 0 && current != side) current = side;
-		else if (xa > 0 && current != side) current = side;
-		if (ya < 0 && current != up) current = up;
-		else if (ya > 0 && current != down) current = down;
+		List<Entity> entities = level.getEntities(this, 80, e -> e instanceof Player);
+		if (entities.size() > 0) {
+			walking = true;
+			Player player = (Player) entities.get(0);
+			double pX = player.x();
+			double pY = player.y();
+			if (x < pX) {
+				xa = speed;
+				current = side;
+			} else if (x > pX) {
+				xa = -speed;
+				current = side;
+			}
+			if (y < pY) {
+				ya = speed;
+				current = down;
+			} else if (y > pY) {
+				ya = -speed;
+				current = up;
+			}
+		} else {
+			walking = false;
+			current = still;
+		}
 
 		move(xa, ya);
-		
-		current.reset(walking);
 	}
 
 	@Override

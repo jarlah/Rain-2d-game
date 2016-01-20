@@ -20,23 +20,44 @@ public abstract class Mob extends Entity {
 		}
 		
 		currentDirection = Direction.NONE;
+		if (xa > 0) currentDirection = Direction.RIGHT;
+		if (xa < 0) currentDirection = Direction.LEFT;
+		if (ya > 0) currentDirection = Direction.DOWN;
+		if (ya < 0) currentDirection = Direction.UP;
 		
-		if (xa > 0)
-			currentDirection = Direction.RIGHT;
-		if (xa < 0)
-			currentDirection = Direction.LEFT;
-		if (ya > 0)
-			currentDirection = Direction.DOWN;
-		if (ya < 0)
-			currentDirection = Direction.UP;
-		
-		if (Direction.NONE == currentDirection) {
-			walking = false;
-		} else if (!collision(xa, ya)) {
-			this.x += xa;
-			this.y += ya;
-			walking = true;
+		while (xa != 0) {
+			int direction = getDirection(xa);
+			if (Math.abs(xa) > 1) {
+				if (!level.pixelCollision(x + direction, y + ya)) {
+					this.x += direction;
+				}
+				xa -= direction;
+			} else {
+				if (!level.pixelCollision(x + direction, y + ya)) {
+					this.x += xa;
+				}
+				xa = 0;
+			}
 		}
+		
+		while (ya != 0) {
+			int direction = getDirection(ya);
+			if (Math.abs(ya) > 1) {
+				if (!level.pixelCollision(x + xa, y + direction)) {
+					this.y += direction;
+				}
+				ya -= direction;
+			} else {
+				if (!level.pixelCollision(x + xa, y + direction)) {
+					this.y += ya;
+				}
+				ya = 0;
+			}
+		}
+	}
+
+	private int getDirection(double n) {
+		return n < 0 ? -1 : 1;
 	}
 	
 	public abstract void update();
@@ -44,18 +65,5 @@ public abstract class Mob extends Entity {
 	
 	public void shoot(double x, double y, double dir) {
 		level.add(new BulletProjectile(x, y, dir));
-	}
-	
-	public boolean collision(double xa, double ya) {
-		boolean solid = false;
-		for (int c = 0; c < 4; c++) {
-			double xt = ((x + xa) + c % 2 * 14 - 8) / 16;
-			double yt = ((y + ya) + c / 2 * 12 + 3) / 16;
-			if (level.getTile((int)xt, (int)yt).solid()) {
-				solid = true;
-			}
-		}
-		
-		return solid;
 	}
 }

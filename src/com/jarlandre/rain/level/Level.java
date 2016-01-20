@@ -7,7 +7,10 @@ import java.util.function.Predicate;
 
 import com.jarlandre.rain.entity.Entity;
 import com.jarlandre.rain.entity.impl.mob.impl.ClientPlayer;
+import com.jarlandre.rain.entity.impl.mob.impl.Ogre;
 import com.jarlandre.rain.entity.impl.mob.impl.Player;
+import com.jarlandre.rain.entity.impl.projectiles.Projectile;
+import com.jarlandre.rain.entity.impl.spawner.impl.ParticleSpawner;
 import com.jarlandre.rain.graphics.Screen;
 import com.jarlandre.rain.level.impl.SpawnLevel;
 import com.jarlandre.rain.tile.Tile;
@@ -81,6 +84,24 @@ public abstract class Level {
 		
 		return solid;
 	}
+	
+	public boolean pixelCollision(double x, double y) {
+		boolean solid = false;
+		
+		for (int c = 0; c < 4; c++) {
+			double xt = (x - c % 2 * Tile.TILE_SIZE) / Tile.TILE_SIZE;
+			double yt = (y - c / 2 * Tile.TILE_SIZE) / Tile.TILE_SIZE;
+			int ix = (int) Math.ceil(xt);
+			int iy = (int) Math.ceil(yt);
+			if (c % 2 == 0) ix = (int) Math.floor(xt);
+			if (c / 2 == 0) iy = (int) Math.floor(yt);
+			if (getTile(ix, iy).solid()) {
+				solid = true;
+			}
+		}
+		
+		return solid;
+	}
 
 	public void render(int xScroll, int yScroll, Screen screen) {
 		screen.setOffsets(xScroll, yScroll);
@@ -130,5 +151,15 @@ public abstract class Level {
 			}
 		}
 		return clientPlayer;
+	}
+
+	public boolean projectileCollision(int x, int y, Projectile projectile) {
+		List<Entity> entities = getEntities(projectile, 10, e -> e instanceof Ogre);
+		if (entities.isEmpty()) return false;
+		Ogre ogre = (Ogre) entities.get(0);
+		ogre.hit((int)projectile.getDamage());
+		new ParticleSpawner(x, y, 44, 50, this).spawn();
+		projectile.remove();
+		return true;
 	}
 }

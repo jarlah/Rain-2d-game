@@ -3,7 +3,6 @@ package com.jarlandre.rain.entity.impl.particle;
 import com.jarlandre.rain.entity.Entity;
 import com.jarlandre.rain.graphics.Screen;
 import com.jarlandre.rain.graphics.Sprite;
-import com.jarlandre.rain.tile.Tile;
 
 public class Particle extends Entity {
 	protected int life;
@@ -41,7 +40,7 @@ public class Particle extends Entity {
 	}
 	
 	public void move(double x, double y) {
-		if (collision(x, y)) {
+		if (level.pixelCollision(x, y)) {
 			this.xa *= -0.5;
 			this.ya *= -0.5;
 			this.za *= -0.5;
@@ -49,24 +48,6 @@ public class Particle extends Entity {
 		this.x += xa;
 		this.y += ya;
 		this.z += za;
-	}
-	
-	public boolean collision(double x, double y) {
-		boolean solid = false;
-		
-		for (int c = 0; c < 4; c++) {
-			double xt = (x - c % 2 * Tile.TILE_SIZE) / Tile.TILE_SIZE;
-			double yt = (y - c / 2 * Tile.TILE_SIZE) / Tile.TILE_SIZE;
-			int ix = (int) Math.ceil(xt);
-			int iy = (int) Math.ceil(yt);
-			if (c % 2 == 0) ix = (int) Math.floor(xt);
-			if (c / 2 == 0) iy = (int) Math.floor(yt);
-			if (level.getTile(ix, iy).solid()) {
-				solid = true;
-			}
-		}
-		
-		return solid;
 	}
 	
 	public void render(Screen render) {
