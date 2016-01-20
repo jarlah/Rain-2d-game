@@ -19,7 +19,8 @@ public class Player extends Mob {
 	public Player(Coordinate coord) {
 		this.x = coord.x();
 		this.y = coord.y();
-		
+		this.speed = 0.6;
+		this.health = 10;
 		this.fireRate = BulletProjectile.FIRE_RATE;
 		
 		this.still = new Animation();
@@ -59,24 +60,24 @@ public class Player extends Mob {
 			if (current != side) {
 				current = side;
 			}
-			xa--;
+			xa -= speed;
 		} else if (KeyboardHandler.isRight()) {
 			if (current != side) {
 				current = side;
 			}
-			xa++;
+			xa += speed;
 		}
 		
 		if (KeyboardHandler.isUp()) {
 			if (current != up) {
 				current = up;
 			}
-			ya--;
+			ya -= speed;
 		} else if (KeyboardHandler.isDown()) {
 			if (current != down) {
 				current = down;
 			}
-			ya++;
+			ya += speed;
 		}
 
 		move(xa, ya);
