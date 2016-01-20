@@ -11,11 +11,11 @@ public class Ogre extends Mob {
 	private Animation current;
 	
 	private double xa = 0, ya = 0;		
-	private int time;
 	
 	public Ogre(double x, double y) {
 		this.x = x;
 		this.y = y;
+		this.speed = 0.3;
 		this.still = new Animation();
 		this.still.setDelay(-1);
 		this.still.setFrames(new Sprite[] {
@@ -47,40 +47,18 @@ public class Ogre extends Mob {
 	public void update() {
 		current.update();
 		
-		if (time > 7400) time = 0;
-		time++;
+		Player player = level.getClientPlayer();
+		double pX = player.x();
+		double pY = player.y();
+		if (x < pX) xa = speed;
+		if (x > pX) xa = -speed;
+		if (y < pY) ya = speed;
+		if (y > pY) ya = -speed;
 		
-		if (time % (random.nextInt(50) + 30) == 0) {
-			xa = random.nextInt(3) - 1;
-			ya = random.nextInt(3) - 1;
-			if (random.nextInt(4) == 0) {
-				xa = 0;
-				ya = 0;
-			}
-		}
-		if (xa < 0) {
-			if (current != side) {
-				side.reset(true);
-				current = side;
-			}
-		} else if (xa > 0) {
-			if (current != side) {
-				side.reset(true);
-				current = side;
-			}
-		}
-		
-		if (ya < 0) {
-			if (current != up) {
-				up.reset(true);
-				current = up;
-			}
-		} else if (ya > 0) {
-			if (current != down) {
-				down.reset(true);
-				current = down;
-			}
-		}
+		if (xa < 0 && current != side) current = side;
+		else if (xa > 0 && current != side) current = side;
+		if (ya < 0 && current != up) current = up;
+		else if (ya > 0 && current != down) current = down;
 
 		move(xa, ya);
 		

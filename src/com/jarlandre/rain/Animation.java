@@ -6,37 +6,38 @@ public class Animation {
 
 	private Sprite[] frames;
 	private int currentFrame;
-
 	private long startTime;
 	private long delay;
-
 	private boolean playedOnce, active;
-	
 	private int width, height;
 
 	public void setFrames(Sprite[] frames, int width, int height) {
 		this.frames = frames;
-		currentFrame = 0;
-		startTime = System.nanoTime();
-		playedOnce = false;
-		active = true;
+		this.currentFrame = 0;
+		this.startTime = System.nanoTime();
+		this.playedOnce = false;
+		this.active = true;
 		this.width = width;
 		this.height = height;
 	}
 
 	public void setDelay(long d) {
-		delay = d;
+		this.delay = d;
 	}
 
 	public void setFrame(int i) {
-		currentFrame = i;
+		this.currentFrame = i;
 	}
 	
-	public void reset(boolean b) {
-		if (!active) {
-			currentFrame = 0;
+	public void reset() {
+		reset(!this.active);
+	}
+	
+	public void reset(boolean active) {
+		if (!this.active) {
+			this.currentFrame = 0;
 		}
-		active = b;
+		this.active = active;
 	}
 
 	public void update() {

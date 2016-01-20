@@ -6,8 +6,8 @@ import com.jarlandre.rain.graphics.Sprite;
 import com.jarlandre.rain.tile.Tile;
 
 public class Particle extends Entity {
-	private int life;
-	private int time;
+	protected int life;
+	protected int time;
 	protected double xa, ya, za;
 	protected double z;
 	

@@ -1,11 +1,20 @@
 package com.jarlandre.rain.entity.impl.spawner;
 
-import com.jarlandre.rain.entity.Entity;
+import java.util.Random;
 
-public abstract class Spawner extends Entity {		
+import com.jarlandre.rain.level.Level;
+
+
+public abstract class Spawner {
+	
+	protected double x, y;
+	protected Level level;
+	protected Random random;
+	
 	public Spawner(double x, double y) {
 		this.x = x;
 		this.y = y;
+		this.random = new Random();
 	}
 
 	public abstract void spawn();

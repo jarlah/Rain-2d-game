@@ -11,6 +11,7 @@ import java.awt.image.DataBufferInt;
 
 import javax.swing.JFrame;
 
+import com.jarlandre.rain.entity.impl.mob.impl.ClientPlayer;
 import com.jarlandre.rain.entity.impl.mob.impl.Player;
 import com.jarlandre.rain.graphics.Screen;
 import com.jarlandre.rain.input.KeyboardHandler;
@@ -53,8 +54,8 @@ public class Game extends Loop {
 		this.canvas.addMouseListener(mouseListener);
 		this.canvas.addMouseMotionListener(mouseListener);
 		this.level = Level.level1;
-		this.player = new Player(new TileCoordinate(10, 52));
-		this.player.setLevel(level);
+		this.player = new ClientPlayer(new TileCoordinate(10, 52));
+		level.add(player);
 		this.canvas.requestFocus();
 	}
 	
@@ -65,7 +66,6 @@ public class Game extends Loop {
 
 	@Override
 	public void update() {
-		player.update();
 		level.update();
 	}
 
@@ -81,7 +81,6 @@ public class Game extends Loop {
 		int xScroll = (int) player.x() - screen.getWidth() / 2;
 		int yScroll = (int) player.y() - screen.getHeight() / 2;
 		level.render(xScroll, yScroll, screen);
-		player.render(screen);
 		for (int i = 0; i < pixels.length; i++) {
 			pixels[i] = screen.getPixels()[i];
 		}

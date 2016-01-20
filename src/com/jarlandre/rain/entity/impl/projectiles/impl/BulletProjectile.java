@@ -2,7 +2,6 @@ package com.jarlandre.rain.entity.impl.projectiles.impl;
 
 import com.jarlandre.rain.Coordinate;
 import com.jarlandre.rain.entity.impl.projectiles.Projectile;
-import com.jarlandre.rain.entity.impl.spawner.Spawner;
 import com.jarlandre.rain.entity.impl.spawner.impl.ParticleSpawner;
 import com.jarlandre.rain.graphics.Sprite;
 
@@ -21,9 +20,7 @@ public class BulletProjectile extends Projectile {
 
 	public void update() {
 		if (level.tileCollision((int) (x + nx), (int) (y + ny), 9, 3, 3)) {
-			Spawner spawner = new ParticleSpawner(x, y, 44, 50);
-			spawner.setLevel(level);
-			spawner.spawn();
+			new ParticleSpawner(x, y, 44, 50, level).spawn();
 			remove();
 			return;
 		}

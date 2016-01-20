@@ -2,13 +2,15 @@ package com.jarlandre.rain.entity.impl.spawner.impl;
 
 import com.jarlandre.rain.entity.impl.mob.impl.Ogre;
 import com.jarlandre.rain.entity.impl.spawner.Spawner;
+import com.jarlandre.rain.level.Level;
 
 public class MobSpawner extends Spawner {
 
 	private int amount;
 
-	public MobSpawner(double x, double y, int amount) {
+	public MobSpawner(double x, double y, int amount, Level level) {
 		super(x, y);
+		this.level = level;
 		this.amount = amount;
 	}
 

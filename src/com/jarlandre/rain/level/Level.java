@@ -1,29 +1,32 @@
 package com.jarlandre.rain.level;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import com.jarlandre.rain.entity.Entity;
+import com.jarlandre.rain.entity.impl.mob.impl.ClientPlayer;
+import com.jarlandre.rain.entity.impl.mob.impl.Player;
 import com.jarlandre.rain.graphics.Screen;
 import com.jarlandre.rain.level.impl.SpawnLevel;
 import com.jarlandre.rain.tile.Tile;
 
 public abstract class Level {
-	protected int width, height;
-	protected int[] tiles;
-	private List<Entity> entities = Collections.synchronizedList(new ArrayList<Entity>());
-
 	public static final Level level1 = new SpawnLevel("textures/spawn_level.png");
+
+	protected int width, height;
+	
+	protected int[] tiles;
+	
+	private List<Entity> entities = Collections.synchronizedList(new ArrayList<Entity>());
+	
+	private Player clientPlayer; // cache
 
 	public Level(String path) {
 		loadLevel(path);
 	}
 
-	protected void loadLevel(String path) {
-
-	}
+	protected abstract void loadLevel(String path);
 
 	public void update() {
 		for (int i = 0; i < entities.size(); i++) {
@@ -79,19 +82,23 @@ public abstract class Level {
 		return Tile.voidTile;
 	}
 
-	public void add(Entity bullet) {
-		bullet.setLevel(this);
-		this.entities.add(bullet);
-	}
-	
-	public void addAll(Collection<Entity> entities) {
-		for (Entity e: entities) {
-			e.setLevel(this);
-			this.entities.add(e);
-		}
+	public void add(Entity e) {
+		e.setLevel(this);
+		this.entities.add(e);
 	}
 	
 	public List<Entity> getEntities() {
 		return entities;
+	}
+	
+	public Player getClientPlayer() {
+		if (clientPlayer == null) {
+			for (Entity e: entities) {
+				if (e instanceof ClientPlayer) {
+					return (clientPlayer = (Player) e);
+				}
+			}
+		}
+		return clientPlayer;
 	}
 }

@@ -12,7 +12,6 @@ import com.jarlandre.rain.input.KeyboardHandler;
 import com.jarlandre.rain.input.MouseHandler;
 
 public class Player extends Mob {
-	private int anim = 0;
 	private int fireRate = 0;
 	private Animation side, down, up, still;
 	private Animation current;
@@ -53,23 +52,16 @@ public class Player extends Mob {
 	public void update() {
 		current.update();
 		
-		walking = KeyboardHandler.isMoving();
-		
 		if (fireRate > 0) fireRate--;
-		
-		if (anim < 7500) anim++;
-		else anim = 0;
 		
 		double xa = 0, ya = 0;		
 		if (KeyboardHandler.isLeft()) {
 			if (current != side) {
-				side.reset(true);
 				current = side;
 			}
 			xa--;
 		} else if (KeyboardHandler.isRight()) {
 			if (current != side) {
-				side.reset(true);
 				current = side;
 			}
 			xa++;
@@ -77,13 +69,11 @@ public class Player extends Mob {
 		
 		if (KeyboardHandler.isUp()) {
 			if (current != up) {
-				up.reset(true);
 				current = up;
 			}
 			ya--;
 		} else if (KeyboardHandler.isDown()) {
 			if (current != down) {
-				down.reset(true);
 				current = down;
 			}
 			ya++;
@@ -91,7 +81,7 @@ public class Player extends Mob {
 
 		move(xa, ya);
 		
-		current.reset(walking);
+		current.reset(KeyboardHandler.isMoving());
 
 		doShooting();
 	}

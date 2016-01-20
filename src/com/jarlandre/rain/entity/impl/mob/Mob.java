@@ -8,6 +8,8 @@ import com.jarlandre.rain.graphics.Screen;
 public abstract class Mob extends Entity {
 	protected Direction currentDirection;
 	
+	protected double speed, damage, health, range;
+	
 	protected boolean walking = false;
 
 	public void move(double xa, double ya) {
