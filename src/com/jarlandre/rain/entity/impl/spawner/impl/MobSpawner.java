@@ -1,6 +1,6 @@
 package com.jarlandre.rain.entity.impl.spawner.impl;
 
-import com.jarlandre.rain.entity.impl.mob.impl.Ogre;
+import com.jarlandre.rain.entity.impl.mob.impl.Star;
 import com.jarlandre.rain.entity.impl.spawner.Spawner;
 import com.jarlandre.rain.level.Level;
 
@@ -17,7 +17,7 @@ public class MobSpawner extends Spawner {
 	@Override
 	public void spawn() {
 		for (int i = 0; i < amount; i++) {
-			level.add(new Ogre(x + random.nextInt(150) + i, y + random.nextInt(50) + i));
+			level.add(new Star(x + random.nextInt(150) + i, y + random.nextInt(50) + i));
 		}
 	}
 

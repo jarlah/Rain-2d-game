@@ -2,9 +2,12 @@ package com.jarlandre.rain.level;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 
+import com.jarlandre.rain.Node;
+import com.jarlandre.rain.Vector2i;
 import com.jarlandre.rain.entity.Entity;
 import com.jarlandre.rain.entity.impl.mob.impl.ClientPlayer;
 import com.jarlandre.rain.entity.impl.mob.impl.Ogre;
@@ -135,6 +138,9 @@ public abstract class Level {
 
 	public void add(Entity e) {
 		e.setLevel(this);
+		if (e instanceof ClientPlayer) {
+			clientPlayer = (Player) e;
+		}
 		this.entities.add(e);
 	}
 	
@@ -143,14 +149,55 @@ public abstract class Level {
 	}
 	
 	public Player getClientPlayer() {
-		if (clientPlayer == null) {
-			for (Entity e: entities) {
-				if (e instanceof ClientPlayer) {
-					return (clientPlayer = (Player) e);
+		return clientPlayer;
+	}
+	
+	public List<Node> findPath(Vector2i start, Vector2i goal) {
+		List<Node> openList = new ArrayList<Node>();
+		List<Node> closedList = new ArrayList<Node>();
+		Node current = new Node(start, null, 0, start.distanceTo(goal));
+		openList.add(current);
+		while(!openList.isEmpty()) {
+			Collections.sort(openList, new Comparator<Node>() {
+				@Override
+				public int compare(Node n1, Node n2) {
+					if (n1.getfCost() < n2.getfCost()) return +1;
+					if (n1.getfCost() > n2.getfCost()) return -1;
+					return 0;
 				}
+			});
+			current = openList.get(0);
+			if (current.getTile().equals(goal)) {
+				List<Node> path = new ArrayList<Node>();
+				while (current.getParent() != null) {
+					path.add(current);
+					current = current.getParent();
+				}
+				openList.clear();
+				closedList.clear();
+				return path;
+			}
+			openList.remove(current);
+			closedList.add(current);
+			for (int i = 0; i < 9; i++) {
+				if (i == 4) continue;
+				int x = current.getTile().getX();
+				int y = current.getTile().getY();
+				int dx = (i % 3) - 1;
+				int dy = (i / 3) - 1;
+				Tile atTile = getTile(x + dx, y + dy);
+				if (atTile == null) continue;
+				if (atTile.solid()) continue;
+				Vector2i atVector = new Vector2i(x + dx, y + dy);
+				double gCost = current.getgCost() + current.getTile().distanceTo(atVector);
+				double hCost = atVector.distanceTo(goal);
+				Node node = new Node(atVector, current, gCost, hCost);
+				if (atVector.inNodeList(closedList) && gCost >= node.getgCost()) continue;
+				if (!atVector.inNodeList(openList) || gCost < node.getgCost()) openList.add(node);
 			}
 		}
-		return clientPlayer;
+		closedList.clear();
+		return null;
 	}
 
 	public boolean projectileCollision(int x, int y, Projectile projectile) {
